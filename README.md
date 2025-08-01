@@ -16,9 +16,7 @@
 <img src="https://mseep.net/pr/datalayer-jupyter-mcp-server-badge.png" alt="MseeP.ai Security Assessment Badge" width="100" />
 </a>
 
-> 🚨 **BREAKING CHANGE**
-> Since version `0.6.0`, the configuration has changed.
-> [Read more in the release notes.](https://jupyter-mcp-server.datalayer.tech/releases)
+> 🚨 **BREAKING CHANGE** For version `0.11.0+`, `room` has been renamed to `document`. [Read more in the release notes.](https://jupyter-mcp-server.datalayer.tech/releases)
 
 **Jupyter MCP Server** is a [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server implementation that enables **real-time** interaction with 📓 Jupyter Notebooks, allowing AI to edit, document and execute code for data analysis, visualization etc.
 
@@ -57,11 +55,11 @@ jupyter lab --port 8888 --IdentityProvider.token MY_TOKEN --ip 0.0.0.0
 
 > [!NOTE]
 >
-> Ensure the `port` of the `ROOM_URL` and `RUNTIME_URL` match those used in the `jupyter lab` command.
+> Ensure the `port` of the `DOCUMENT_URL` and `RUNTIME_URL` match those used in the `jupyter lab` command.
 >
-> The `ROOM_ID` which is the path to the notebook you want to connect to, should be relative to the directory where JupyterLab was started.
+> The `DOCUMENT_ID` which is the path to the notebook you want to connect to, should be relative to the directory where JupyterLab was started.
 >
-> In a basic setup, `ROOM_URL` and `RUNTIME_URL` are the same. `ROOM_TOKEN`, and `RUNTIME_TOKEN` are also the same.
+> In a basic setup, `DOCUMENT_URL` and `RUNTIME_URL` are the same. `DOCUMENT_TOKEN`, and `RUNTIME_TOKEN` are also the same.
 
 #### MacOS and Windows
 
@@ -75,11 +73,11 @@ jupyter lab --port 8888 --IdentityProvider.token MY_TOKEN --ip 0.0.0.0
         "-i",
         "--rm",
         "-e",
-        "ROOM_URL",
+        "DOCUMENT_URL",
         "-e",
-        "ROOM_TOKEN",
+        "DOCUMENT_TOKEN",
         "-e",
-        "ROOM_ID",
+        "DOCUMENT_ID",
         "-e",
         "RUNTIME_URL",
         "-e",
@@ -87,9 +85,9 @@ jupyter lab --port 8888 --IdentityProvider.token MY_TOKEN --ip 0.0.0.0
         "datalayer/jupyter-mcp-server:latest"
       ],
       "env": {
-        "ROOM_URL": "http://host.docker.internal:8888",
-        "ROOM_TOKEN": "MY_TOKEN",
-        "ROOM_ID": "notebook.ipynb",
+        "DOCUMENT_URL": "http://host.docker.internal:8888",
+        "DOCUMENT_TOKEN": "MY_TOKEN",
+        "DOCUMENT_ID": "notebook.ipynb",
         "RUNTIME_URL": "http://host.docker.internal:8888",
         "RUNTIME_TOKEN": "MY_TOKEN"
       }
@@ -110,11 +108,11 @@ jupyter lab --port 8888 --IdentityProvider.token MY_TOKEN --ip 0.0.0.0
         "-i",
         "--rm",
         "-e",
-        "ROOM_URL",
+        "DOCUMENT_URL",
         "-e",
-        "ROOM_TOKEN",
+        "DOCUMENT_TOKEN",
         "-e",
-        "ROOM_ID",
+        "DOCUMENT_ID",
         "-e",
         "RUNTIME_URL",
         "-e",
@@ -123,9 +121,9 @@ jupyter lab --port 8888 --IdentityProvider.token MY_TOKEN --ip 0.0.0.0
         "datalayer/jupyter-mcp-server:latest"
       ],
       "env": {
-        "ROOM_URL": "http://localhost:8888",
-        "ROOM_TOKEN": "MY_TOKEN",
-        "ROOM_ID": "notebook.ipynb",
+        "DOCUMENT_URL": "http://localhost:8888",
+        "DOCUMENT_TOKEN": "MY_TOKEN",
+        "DOCUMENT_ID": "notebook.ipynb",
         "RUNTIME_URL": "http://localhost:8888",
         "RUNTIME_TOKEN": "MY_TOKEN"
       }
