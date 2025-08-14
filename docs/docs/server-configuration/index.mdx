@@ -7,11 +7,11 @@ jupyter-mcp-server start --help
 
 Usage: jupyter-mcp-server start [OPTIONS]
 
-  Start the Jupyter MCP Server with a transport.
+  Start the Jupyter MCP server with a transport.
 
 Options:
   --transport [stdio|streamable-http]
-                                  The transport to use for the MCP Server.
+                                  The transport to use for the MCP server.
                                   Defaults to 'stdio'.
   --provider [jupyter|datalayer]  The provider to use for the document and
                                   runtime. Defaults to 'jupyter'.
@@ -19,26 +19,26 @@ Options:
                                   provider, this is the Jupyter server URL.
                                   For the datalayer provider, this is the
                                   Datalayer runtime URL.
-  --runtime-token TEXT            The runtime token to use for authentication
-                                  with the provider. If not provided, the
-                                  provider should accept anonymous requests.
   --start-new-runtime BOOLEAN     Start a new runtime or use an existing one.
   --runtime-id TEXT               The kernel ID to use. If not provided, a new
                                   kernel should be started.
-  --document-url TEXT                 The document URL to use. For the jupyter
+  --runtime-token TEXT            The runtime token to use for authentication
+                                  with the provider. If not provided, the
+                                  provider should accept anonymous requests.
+  --document-url TEXT             The document URL to use. For the jupyter
                                   provider, this is the Jupyter server URL.
                                   For the datalayer provider, this is the
                                   Datalayer document URL.
-  --document-id TEXT                  The document id to use. For the jupyter
+  --document-id TEXT              The document id to use. For the jupyter
                                   provider, this is the notebook path. For the
                                   datalayer provider, this is the notebook
                                   path.
-  --document-token TEXT               The document token to use for authentication
+  --document-token TEXT           The document token to use for authentication
                                   with the provider. If not provided, the
                                   provider should accept anonymous requests.
   --port INTEGER                  The port to use for the Streamable HTTP
                                   transport. Ignored for stdio transport.
-  --help                          Show this message and exit.
+  --help                          Show this message and exit
 ```
 
 ## Start and Connect
@@ -50,7 +50,7 @@ jupyter-mcp-server start \
   --transport streamable-http \
   --runtime-token MY_TOKEN \
   --document-url http://localhost:8888 \
-  --runtnime-url http://localhost:8888 \
+  --runtime-url http://localhost:8888 \
   --start-new-runtime false
 ```
 

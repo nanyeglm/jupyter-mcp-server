@@ -949,7 +949,7 @@ def server():
     envvar="RUNTIME_TOKEN",
     type=click.STRING,
     default=None,
-    help="The runtime token to use for authentication with the provider. If not provided, the provider should accept anonymous requests.",
+    help="The runtime token to use for authentication with the provider.  For the jupyter provider, this is the jupyter token. For the datalayer provider, this is the datalayer token. If not provided, the provider should accept anonymous requests.",
 )
 @click.option(
     "--document-url",
@@ -970,7 +970,7 @@ def server():
     envvar="DOCUMENT_TOKEN",
     type=click.STRING,
     default=None,
-    help="The document token to use for authentication with the provider. If not provided, the provider should accept anonymous requests.",
+    help="The document token to use for authentication with the provider. For the jupyter provider, this is the jupyter token. For the datalayer provider, this is the datalayer token. If not provided, the provider should accept anonymous requests.",
 )
 @click.option(
     "--jupyter-mcp-server-url",
