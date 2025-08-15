@@ -57,7 +57,7 @@ module.exports = {
         },
         {
           type: 'doc',
-          docId: 'server-configuration/index',
+          docId: 'configuration/index',
           position: 'left',
           label: 'Configuration',
         },
@@ -66,6 +66,12 @@ module.exports = {
           docId: 'run/index',
           position: 'left',
           label: 'Run',
+        },
+        {
+          type: 'doc',
+          docId: 'operation/index',
+          position: 'left',
+          label: 'Operation',
         },
         {
           type: 'doc',
@@ -181,23 +187,19 @@ module.exports = {
           items: [
             {
               label: 'Datalayer',
-              href: 'https://datalayer.io',
+              href: 'https://datalayer.ai',
             },
             {
               label: 'Datalayer Docs',
-              href: 'https://docs.datalayer.app',
-            },
-            {
-              label: 'Datalayer Tech',
-              href: 'https://datalayer.tech',
-            },
-            {
-              label: 'Datalayer Guide',
-              href: 'https://datalayer.guide',
+              href: 'https://docs.datalayer.ai',
             },
             {
               label: 'Datalayer Blog',
               href: 'https://datalayer.blog',
+            },
+            {
+              label: 'Datalayer Guide',
+              href: 'https://datalayer.guide',
             },
           ],
         },
