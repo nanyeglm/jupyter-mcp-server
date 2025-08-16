@@ -57,21 +57,21 @@ module.exports = {
         },
         {
           type: 'doc',
-          docId: 'configuration/index',
+          docId: 'configure/index',
           position: 'left',
-          label: 'Configuration',
+          label: 'Configure',
         },
         {
           type: 'doc',
-          docId: 'run/index',
+          docId: 'serve/index',
           position: 'left',
-          label: 'Run',
+          label: 'Serve',
         },
         {
           type: 'doc',
-          docId: 'operation/index',
+          docId: 'operate/index',
           position: 'left',
-          label: 'Operation',
+          label: 'Operate',
         },
         {
           type: 'doc',

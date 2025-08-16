@@ -1,35 +1,26 @@
-# VS Code
-
-<!-- ![Jupyter MCP Server](https://assets.datalayer.tech/jupyter-mcp/jupyter-mcp-server-vs-code.gif) -->
-
-> ✅ _Information valid as of June 2025_
-<br />
+# VS Code
 
 You can find the complete VS Code MCP documentation [here](https://code.visualstudio.com/docs/copilot/chat/mcp-servers#_use-mcp-tools-in-agent-mode).
 
-## Install VS Code
+## Install VS Code
 
-Download VS Code from the [official site](https://code.visualstudio.com/Download).
-Make sure you're using **VS Code 1.99 or later**.
+Download VS Code from the [official site](https://code.visualstudio.com/Download) and install it.
 
 ## Install GitHub Copilot Extension
 
-To use MCP tools and agent mode in VS Code, you need an active [GitHub Copilot](https://github.com/features/copilot) subscription.
-
-Then, install the [GitHub Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat) extension from the VS Code Marketplace.
-
-## Enable Model Context Protocol (MCP) in Copilot
-
-As of June 2025, MCP in Copilot is in Preview so you need to enable the [chat.mcp.enabled](vscode://settings/chat.mcp.enabled) setting. Click the link to open the setting in VS Code and enable it by checking the box.
-
+To use MCP tools and Agent mode in VS Code, you need an active [GitHub Copilot](https://github.com/features/copilot) subscription. Then, install the [GitHub Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat) extension from the VS Code Marketplace.
 
 ## Configure Jupyter MCP Server
 
-There are two ways to configure the Jupyter MCP Server in VS Code: user settings or workspace settings.
+There are two ways to configure the Jupyter MCP Server in VS Code: user settings or workspace settings. Once configured, restart VS Code.
 
-Once configured, restart VS Code.
+:::note
 
-### a. In `settings.json` - user settings
+We explicitely use the name `DatalayerJupyter` as VS Code has already a `Jupyter` MCP Server configured by default for the VS Code built-in notebooks.
+
+:::
+
+### As User Settings in `settings.json`
 
 Open your `settings.json`:
 
@@ -43,33 +34,76 @@ Then add the following configuration:
 {
   "mcp": {
     "servers": {
-      "jupyter": {
-        // Jupyter MCP Server configuration
+    "DatalayerJupyter": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "DOCUMENT_URL",
+        "-e",
+        "DOCUMENT_TOKEN",
+        "-e",
+        "DOCUMENT_ID",
+        "-e",
+        "RUNTIME_URL",
+        "-e",
+        "RUNTIME_TOKEN",
+        "datalayer/jupyter-mcp-server:latest"
+      ],
+      "env": {
+        "DOCUMENT_URL": "http://host.docker.internal:8888",
+        "DOCUMENT_TOKEN": "MY_TOKEN",
+        "DOCUMENT_ID": "notebook.ipynb",
+        "RUNTIME_URL": "http://host.docker.internal:8888",
+        "RUNTIME_TOKEN": "MY_TOKEN"
       }
     }
   }
 }
 ```
 
-Replace `// Jupyter MCP Server configuration` with the actual configuration details from the [Jupyter MCP Server documentation](/run).
+Replace `// Jupyter MCP Server configuration` with the actual configuration details from the [Jupyter MCP Server documentation](/clients).
 
-### b. Using the `.vscode/mcp.json` workspace file - workspace settings
+###  As Workspace Settings in `.vscode/mcp.json`
 
-Open or create a `.vscode/mcp.json` file in your workspace root directory.
-
-Then add the following configuration:
+Open or create a `.vscode/mcp.json` file in your workspace root directory. Then add the following example configuration:
 
 ```jsonc
 {
   "servers": {
-    "jupyter": {
-      // Jupyter MCP Server configuration
+    "DatalayerJupyter": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "DOCUMENT_URL",
+        "-e",
+        "DOCUMENT_TOKEN",
+        "-e",
+        "DOCUMENT_ID",
+        "-e",
+        "RUNTIME_URL",
+        "-e",
+        "RUNTIME_TOKEN",
+        "datalayer/jupyter-mcp-server:latest"
+      ],
+      "env": {
+        "DOCUMENT_URL": "http://host.docker.internal:8888",
+        "DOCUMENT_TOKEN": "MY_TOKEN",
+        "DOCUMENT_ID": "notebook.ipynb",
+        "RUNTIME_URL": "http://host.docker.internal:8888",
+        "RUNTIME_TOKEN": "MY_TOKEN"
+      }
     }
   }
 }
 ```
 
-Replace `// Jupyter MCP Server configuration` with the actual configuration details from the [Jupyter MCP Server documentation](/run).
+Update with the actual configuration details from the [Jupyter MCP Server documentation](/configure).
 
 This enables workspace-specific configuration and sharing.
 

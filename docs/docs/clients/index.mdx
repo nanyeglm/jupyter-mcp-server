@@ -8,15 +8,13 @@ We have tested and validated the Jupyter MCP Server with the following clients:
 - [Cline](./cline)
 - [Windsurf](./windsurf)
 
-The Jupyter MCP Server is also compatible with **ANY** MCP client — see the growing list in [MCP clients](https://modelcontextprotocol.io/clients). This means that you are **NOT** limited to the clients listed above.
+The Jupyter MCP Server is also compatible with **ANY** MCP client — see the growing list in [MCP clients](https://modelcontextprotocol.io/clients). This means that you are **NOT** limited to the clients listed above. Both [STDIO](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#stdio) and [streamable HTTP](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#streamable-http) transports are supported.
 
-Jupyter MCP Server supports both [stdio](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#stdio) and [streamable HTTP](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#streamable-http) transports.
+If you prefer a CLI approach as client, you can use for example the python [mcp-client-cli](https://github.com/adhikasp/mcp-client-cli) package.
 
-## Stdio Transport
+## STDIO Transport
 
-Use the following configuration file to set up the Jupyter MCP Server for your preferred MCP client.
-
-Note that the configuration is dependent on the operating system you are using.
+Use the following configuration file to set up the Jupyter MCP Server for your preferred MCP client. Note that the configuration is dependent on the operating system you are using.
 
 :::important
 
@@ -26,7 +24,7 @@ Note that the configuration is dependent on the operating system you are using.
 
 - In a basic setup, `DOCUMENT_URL` and `RUNTIME_URL` are the same. `DOCUMENT_TOKEN`, and `RUNTIME_TOKEN` are also the same and are actually the Jupyter Token.
 
-- More environment variables can be set, refer to the [server configuration](/configuration) for more details. If not specified, the server will use the default values.
+- More environment variables can be set, refer to the [server configuration](/configure) for more details. If not specified, the server will use the default values.
 
 :::
 
@@ -103,9 +101,7 @@ Note that the configuration is dependent on the operating system you are using.
 
 ## Streamable HTTP Transport
 
-Jupyter MCP Servers also supports streamable HTTP transport, which allows you to connect to the Jupyter MCP Server using a URL.
-
-To start the server, you can either use `python` or `docker`. The server will listen on port `4040`, you can access it via http://localhost:4040.
+Jupyter MCP Servers also supports streamable HTTP transport, which allows you to connect to the Jupyter MCP Server using a URL. To start the server, you can either use `python` or `docker`. The server will listen on port `4040`, you can access it via http://localhost:4040.
 
 Use the following configuration for you MCP client to connect to a running MCP Server.
 
