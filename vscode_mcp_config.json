@@ -1,0 +1,33 @@
+{
+  "mcp": {
+    "servers": {
+      "DatalayerJupyter": {
+        "command": "docker",
+        "args": [
+          "run",
+          "-i",
+          "--rm",
+          "-e",
+          "DOCUMENT_URL",
+          "-e",
+          "DOCUMENT_TOKEN",
+          "-e",
+          "DOCUMENT_ID",
+          "-e",
+          "RUNTIME_URL",
+          "-e",
+          "RUNTIME_TOKEN",
+          "--network=host",
+          "datalayer/jupyter-mcp-server:latest"
+        ],
+        "env": {
+          "DOCUMENT_URL": "http://127.0.0.1:8888",
+          "DOCUMENT_TOKEN": "ac87b951248e6cc6d5c58af49c043fe55412c3928f7df359",
+          "DOCUMENT_ID": "notebook.ipynb",
+          "RUNTIME_URL": "http://127.0.0.1:8888",
+          "RUNTIME_TOKEN": "ac87b951248e6cc6d5c58af49c043fe55412c3928f7df359"
+        }
+      }
+    }
+  }
+}
