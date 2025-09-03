@@ -526,3 +526,296 @@ docker run -i --rm \
 3. 根据实际需求调整配置参数
 4. 考虑设置生产环境的安全措施
 5. 定期更新和维护服务组件
+
+## 🗑️ 完整移除教程
+
+如果你需要彻底移除Jupyter MCP Server及相关组件，请按以下步骤操作：
+
+### 第一步：停止所有运行的服务
+
+#### 1. 停止MCP Server容器
+
+```bash
+# 查看运行中的MCP Server容器
+docker ps | grep jupyter-mcp-server
+
+# 停止所有相关容器
+docker stop $(docker ps -q --filter ancestor=datalayer/jupyter-mcp-server)
+
+# 强制删除容器（如果需要）
+docker rm -f $(docker ps -aq --filter ancestor=datalayer/jupyter-mcp-server)
+```
+
+#### 2. 停止Jupyter服务
+
+```bash
+# 停止systemd服务
+systemctl --user stop jupyter
+
+# 禁用开机自启
+systemctl --user disable jupyter
+
+# 验证服务已停止
+systemctl --user status jupyter
+```
+
+### 第二步：移除Docker镜像和容器
+
+#### 1. 删除MCP Server镜像
+
+```bash
+# 删除官方镜像
+docker rmi datalayer/jupyter-mcp-server:latest
+
+# 删除所有相关镜像（如果有多个版本）
+docker images | grep jupyter-mcp-server | awk '{print $3}' | xargs docker rmi
+
+# 清理未使用的镜像
+docker image prune -f
+```
+
+#### 2. 清理Docker资源
+
+```bash
+# 清理停止的容器
+docker container prune -f
+
+# 清理未使用的网络
+docker network prune -f
+
+# 清理未使用的卷
+docker volume prune -f
+
+# 清理构建缓存
+docker builder prune -f
+```
+
+### 第三步：移除systemd服务配置
+
+#### 1. 删除服务文件
+
+```bash
+# 删除用户服务文件
+rm -f ~/.config/systemd/user/jupyter.service
+
+# 重新加载systemd配置
+systemctl --user daemon-reload
+
+# 重置失败状态（如果有）
+systemctl --user reset-failed
+```
+
+#### 2. 验证服务已移除
+
+```bash
+# 检查服务是否还存在
+systemctl --user list-unit-files | grep jupyter
+
+# 检查是否有残留的服务状态
+systemctl --user status jupyter
+```
+
+### 第四步：卸载Python依赖包
+
+#### 1. 卸载MCP相关包
+
+```bash
+# 激活conda环境
+source /home/cpu/miniforge3/bin/activate
+
+# 卸载jupyter-collaboration
+conda remove jupyter-collaboration -y
+
+# 卸载datalayer_pycrdt
+pip uninstall datalayer_pycrdt -y
+
+# 重新安装标准pycrdt（如果需要）
+conda install pycrdt -c conda-forge -y
+```
+
+#### 2. 可选：完全卸载Jupyter（谨慎操作）
+
+```bash
+# 如果你不再需要Jupyter，可以完全卸载
+conda remove jupyterlab jupyter jupyter_server ipykernel -y
+
+# 或者卸载整个base环境（极度谨慎）
+# conda env remove -n base
+```
+
+### 第五步：清理配置文件和数据
+
+#### 1. 删除项目文件
+
+```bash
+# 删除部署目录中的配置文件
+cd /mnt/data/mcp/jupyter-mcp-server
+rm -f claude_desktop_config.json
+rm -f vscode_mcp_config.json
+rm -f cursor_mcp_config.json
+rm -f start_mcp_server.sh
+rm -f COMPLETE_DEPLOYMENT_GUIDE.md
+rm -f QUICK_REFERENCE.md
+rm -f DEPLOYMENT_GUIDE.md
+rm -f notebook.ipynb
+
+# 删除测试notebook
+rm -f /home/cpu/notebook.ipynb
+```
+
+#### 2. 清理Jupyter配置（可选）
+
+```bash
+# 备份现有配置（推荐）
+cp -r ~/.jupyter ~/.jupyter.backup.$(date +%Y%m%d)
+
+# 删除Jupyter配置目录（谨慎操作）
+# rm -rf ~/.jupyter
+
+# 删除Jupyter运行时目录
+rm -rf ~/.local/share/jupyter/runtime/*
+```
+
+### 第六步：移除客户端配置
+
+#### 1. Claude Desktop
+
+```bash
+# 备份配置文件
+cp ~/.config/claude/claude_desktop_config.json ~/.config/claude/claude_desktop_config.json.backup
+
+# 编辑配置文件，移除jupyter相关配置
+nano ~/.config/claude/claude_desktop_config.json
+
+# 或者完全删除配置文件重新开始
+# rm ~/.config/claude/claude_desktop_config.json
+```
+
+#### 2. VS Code
+
+```bash
+# 备份VS Code设置
+cp ~/.vscode/settings.json ~/.vscode/settings.json.backup
+
+# 编辑settings.json，移除mcp.servers.DatalayerJupyter配置
+nano ~/.vscode/settings.json
+
+# 删除工作区MCP配置文件
+find . -name ".vscode" -type d -exec rm -f {}/mcp.json \;
+```
+
+#### 3. Cursor
+
+```bash
+# 备份Cursor配置
+cp ~/.cursor/mcp.json ~/.cursor/mcp.json.backup
+
+# 编辑配置文件，移除jupyter相关配置
+nano ~/.cursor/mcp.json
+
+# 或者删除整个MCP配置文件
+# rm ~/.cursor/mcp.json
+```
+
+### 第七步：验证完全移除
+
+#### 1. 检查进程
+
+```bash
+# 检查是否有残留的Jupyter进程
+ps aux | grep jupyter
+
+# 检查是否有残留的Docker容器
+docker ps -a | grep jupyter
+
+# 检查端口占用
+netstat -tlnp | grep -E "(8888|4040)"
+```
+
+#### 2. 检查文件系统
+
+```bash
+# 搜索残留的配置文件
+find ~ -name "*jupyter*" -type f 2>/dev/null
+find ~ -name "*mcp*" -type f 2>/dev/null
+
+# 检查Docker镜像
+docker images | grep jupyter
+```
+
+#### 3. 检查服务状态
+
+```bash
+# 检查systemd服务
+systemctl --user list-units | grep jupyter
+
+# 检查开机自启项
+systemctl --user list-unit-files | grep jupyter
+```
+
+### 第八步：清理脚本（一键移除）
+
+为了方便操作，你可以创建一个自动化清理脚本：
+
+```bash
+#!/bin/bash
+# 创建清理脚本
+cat > cleanup_jupyter_mcp.sh << 'EOF'
+#!/bin/bash
+
+echo "🗑️ 开始清理Jupyter MCP Server..."
+
+# 停止服务
+echo "停止服务..."
+systemctl --user stop jupyter 2>/dev/null
+systemctl --user disable jupyter 2>/dev/null
+
+# 停止Docker容器
+echo "停止Docker容器..."
+docker stop $(docker ps -q --filter ancestor=datalayer/jupyter-mcp-server) 2>/dev/null
+docker rm -f $(docker ps -aq --filter ancestor=datalayer/jupyter-mcp-server) 2>/dev/null
+
+# 删除Docker镜像
+echo "删除Docker镜像..."
+docker rmi datalayer/jupyter-mcp-server:latest 2>/dev/null
+docker image prune -f
+
+# 删除服务文件
+echo "删除systemd服务..."
+rm -f ~/.config/systemd/user/jupyter.service
+systemctl --user daemon-reload
+
+# 卸载Python包
+echo "卸载Python包..."
+source /home/cpu/miniforge3/bin/activate
+pip uninstall datalayer_pycrdt -y 2>/dev/null
+conda remove jupyter-collaboration -y 2>/dev/null
+
+# 删除配置文件
+echo "删除配置文件..."
+rm -f claude_desktop_config.json vscode_mcp_config.json cursor_mcp_config.json
+rm -f start_mcp_server.sh *.md notebook.ipynb
+rm -f /home/cpu/notebook.ipynb
+
+echo "✅ 清理完成！"
+echo "请手动检查并清理客户端配置文件中的MCP相关配置。"
+EOF
+
+# 使脚本可执行
+chmod +x cleanup_jupyter_mcp.sh
+
+# 运行清理脚本
+./cleanup_jupyter_mcp.sh
+```
+
+### ⚠️ 重要提醒
+
+1. **备份重要数据**: 移除前请备份重要的notebook文件和配置
+2. **分步执行**: 建议分步执行，避免误删重要文件
+3. **检查依赖**: 确认其他应用不依赖要删除的组件
+4. **客户端配置**: 手动检查并清理客户端中的MCP配置
+5. **系统影响**: 卸载Jupyter可能影响其他Python项目
+
+### 🔄 重新安装
+
+如果将来需要重新安装，只需重新按照部署指南操作即可。所有配置文件都已保存，可以快速恢复。
